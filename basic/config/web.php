@@ -7,10 +7,6 @@ $config = [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'components' => [
-        'request' => [
-            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'W8aLzUU1VE-PKDr2ozLyyV1wV--DGkbe',
-        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
@@ -37,15 +33,14 @@ $config = [
                 ],
             ],
         ],
+        //数据库配置
         'db' => require(__DIR__ . '/db.php'),
-        /*
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-            ],
-        ],
-        */
+        //请求相关配置
+        'request' => require(__DIR__ . '/request.php'),
+        //响应相关配置
+        'response' => require(__DIR__ . '/response.php'),
+        //路由配置
+        'urlManager' => require(__DIR__ . '/urlManager.php'),
     ],
     'params' => $params,
 ];
