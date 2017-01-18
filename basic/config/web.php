@@ -10,10 +10,6 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
-        'user' => [
-            'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
-        ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
@@ -35,12 +31,16 @@ $config = [
         ],
         //数据库配置
         'db' => require(__DIR__ . '/db.php'),
+        //Redis配置
+        'redis' => require(__DIR__ . '/redis.php'),
         //请求相关配置
         'request' => require(__DIR__ . '/request.php'),
         //响应相关配置
         'response' => require(__DIR__ . '/response.php'),
         //路由配置
         'urlManager' => require(__DIR__ . '/urlManager.php'),
+        //用户验证相关配置
+        'user' => require(__DIR__ . '/user.php'),
     ],
     'params' => $params,
 ];

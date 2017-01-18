@@ -3,12 +3,13 @@
 namespace app\models;
 
 use yii\db\ActiveRecord;
+use yii\filters\RateLimitInterface;
 use yii\helpers\Url;
 use yii\web\IdentityInterface;
 use yii\web\Link;
 use yii\web\Linkable;
 
-class User extends ActiveRecord implements IdentityInterface, Linkable
+class User extends ActiveRecord implements IdentityInterface, Linkable, RateLimitInterface
 {
     public static function tableName()
     {
@@ -34,7 +35,7 @@ class User extends ActiveRecord implements IdentityInterface, Linkable
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return static::findOne(['access_token' => $token]);
+        return static::findOne(['id' => $token]);
     }
 
     /**
@@ -107,5 +108,55 @@ class User extends ActiveRecord implements IdentityInterface, Linkable
                 ];
             }
         ];
+    }
+
+    //要启用速率限制, yii\web\User::identityClass 应该实现 yii\filters\RateLimitInterface.
+    // 这个接口需要实现以下三个方法：
+
+    /**
+     * getRateLimit(): 返回允许的请求的最大数目及时间，例如，[100, 600] 表示在600秒内最多100次的API调用。
+     * @param \yii\web\Request $request
+     * @param \yii\base\Action $action
+     * @return array
+     */
+    public function getRateLimit($request, $action)
+    {
+        return [2, 10];// $rateLimit requests per second
+    }
+
+    /**
+     * loadAllowance(): 返回剩余的允许的请求和相应的UNIX时间戳数 当最后一次速率限制检查时。
+     * @param \yii\web\Request $request
+     * @param \yii\base\Action $action
+     * @return array
+     */
+    public function loadAllowance($request, $action)
+    {
+        $id = \Yii::$app->user->id;
+        $rateLimit = RateLimit::find()->where([
+            'user' => $id
+        ])->one();
+        return [
+            !empty($rateLimit->allowance) ? $rateLimit->allowance : 0,
+            !empty($rateLimit->allowance_updated_at) ? $rateLimit->allowance_updated_at : 0
+        ];
+    }
+
+    /**
+     * saveAllowance(): 保存允许剩余的请求数和当前的UNIX时间戳。
+     * @param \yii\web\Request $request
+     * @param \yii\base\Action $action
+     * @param int $allowance
+     * @param int $timestamp
+     */
+    public function saveAllowance($request, $action, $allowance, $timestamp)
+    {
+        $rateLimit = new RateLimit();
+        $id = \Yii::$app->user->id;
+        $rateLimit->id = $id;
+        $rateLimit->allowance = $allowance;
+        $rateLimit->allowance_updated_at = $timestamp;
+        $rateLimit->save();
+
     }
 }
