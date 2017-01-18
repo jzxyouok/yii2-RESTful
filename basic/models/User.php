@@ -134,7 +134,7 @@ class User extends ActiveRecord implements IdentityInterface, Linkable, RateLimi
     {
         $id = \Yii::$app->user->id;
         $rateLimit = RateLimit::find()->where([
-            'user' => $id
+            'id' => $id
         ])->one();
         return [
             !empty($rateLimit->allowance) ? $rateLimit->allowance : 0,
