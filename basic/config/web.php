@@ -41,6 +41,8 @@ $config = [
         'urlManager' => require(__DIR__ . '/urlManager.php'),
         //用户验证相关配置
         'user' => require(__DIR__ . '/user.php'),
+        //Oauth 2 相关配置
+        'authClientCollection' => require(__DIR__ . '/authClientCollection.php'),
     ],
     //模块相关配置
     'modules' => require(__DIR__ . '/modules.php'),

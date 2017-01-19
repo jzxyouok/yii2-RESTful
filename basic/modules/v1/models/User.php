@@ -83,11 +83,17 @@ class User extends ActiveRecord implements IdentityInterface, Linkable, RateLimi
     public function fields()
     {
         return [
-            'nickname',
-            'account' => 'account',
-            'register_time',
-            'last_login_time',
-            'last_login_ip',
+            'id',
+            'username' => 'username',
+            'head',
+            'auth_key',
+            'password_hash',
+            'password_reset_token',
+            'email',
+            'role',
+            'status',
+            'created_at',
+            'updated_at',
             'now_time' => function ($model) {
                 return date('Y-m-d H:i:s', time());
             },

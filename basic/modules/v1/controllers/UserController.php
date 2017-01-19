@@ -28,7 +28,7 @@ use yii\web\HttpException;
 
 class UserController extends ActiveController
 {
-    public $modelClass = 'app\models\v1\User';
+    public $modelClass = 'app\modules\v1\models\User';
     /**
      * 有时你可能想通过直接在响应主体内包含分页信息来简化客户端的开发工作。
      * @var array
