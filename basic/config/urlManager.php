@@ -11,7 +11,7 @@ return [
     'rules' => [
         [
             'class' => 'yii\rest\UrlRule',
-            'controller' => 'user',
+            'controller' => 'v1/user',
         ],
     ],
 ];

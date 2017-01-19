@@ -42,6 +42,8 @@ $config = [
         //用户验证相关配置
         'user' => require(__DIR__ . '/user.php'),
     ],
+    //模块相关配置
+    'modules' => require(__DIR__ . '/modules.php'),
     'params' => $params,
 ];
 
