@@ -3,20 +3,15 @@
 return [
     'class' => 'yii\authclient\Collection',
     'clients' => [
-        'google' => [
-            'class' => 'yii\authclient\clients\Google',
-            'clientId' => 'google_client_id',
-            'clientSecret' => 'google_client_secret',
-        ],
-        'facebook' => [
-            'class' => 'yii\authclient\clients\Facebook',
-            'clientId' => 'facebook_client_id',
-            'clientSecret' => 'facebook_client_secret',
-        ],
         'github' => [
             'class' => 'yii\authclient\clients\GitHub',
-            'clientId' => 'github_client_id',
-            'clientSecret' => 'github_client_secret',
+            'clientId' => 'f9cbc7feb7f3cb0ca7fc',
+            'clientSecret' => 'b481635a89fb4c9df50932073ccbe515ce4494ac',
+        ],
+        'qq' => [
+            'class'=>'yii\authclient\clients\QqOAuth',
+            'clientId'=>'1105885289',
+            'clientSecret'=>'VpcITXqiz4VnHEmr',
         ],
         // etc.
     ],

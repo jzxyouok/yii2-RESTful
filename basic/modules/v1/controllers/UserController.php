@@ -24,9 +24,10 @@ use yii\filters\auth\HttpBearerAuth;
 use yii\filters\auth\QueryParamAuth;
 use yii\filters\RateLimiter;
 use yii\rest\ActiveController;
+use yii\rest\Controller;
 use yii\web\HttpException;
 
-class UserController extends ActiveController
+class UserController extends Controller
 {
     public $modelClass = 'app\modules\v1\models\User';
     /**
@@ -108,23 +109,23 @@ class UserController extends ActiveController
      * 所有这些操作通过yii\rest\ActiveController::actions() 方法申明，可覆盖actions()方法配置或禁用这些操作
      * @return array
      */
-    public function actions()
+/*    public function actions()
     {
         $actions = parent::actions();
 
-        // 禁用"delete" 和 "create" 操作
-        unset($actions['delete'], $actions['create']);
+        // 禁用"delete"、"view" 和 "create" 操作
+        unset($actions['delete'], $actions['create'], $actions['view']);
 
         // 使用"prepareDataProvider()"方法自定义数据provider
         $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
 
         return $actions;
-    }
+    }*/
 
     /**
      * 为"index"操作准备和返回数据provider
      */
-    public function prepareDataProvider()
+    public function actionIndex()
     {
         return new ActiveDataProvider([
             'query' => User::find(),
