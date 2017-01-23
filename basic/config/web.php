@@ -33,16 +33,14 @@ $config = [
         'db' => require(__DIR__ . '/db.php'),
         //Redis配置
         'redis' => require(__DIR__ . '/redis.php'),
-        //请求相关配置
-        'request' => require(__DIR__ . '/request.php'),
-        //响应相关配置
-        'response' => require(__DIR__ . '/response.php'),
         //路由配置
         'urlManager' => require(__DIR__ . '/urlManager.php'),
         //用户验证相关配置
         'user' => require(__DIR__ . '/user.php'),
-        //Oauth 2 相关配置
-        //'authClientCollection' => require(__DIR__ . '/authClientCollection.php'),
+        //请求相关配置
+        'request' => require(__DIR__ . '/request.php'),
+        //响应相关配置
+        'response' => require(__DIR__ . '/response.php'),
     ],
     //模块相关配置
     'modules' => require(__DIR__ . '/modules.php'),

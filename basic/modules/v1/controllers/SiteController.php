@@ -2,17 +2,15 @@
 
 namespace app\modules\v1\controllers;
 
-use app\modules\v1\models\LoginForm;
-use app\modules\v1\models\User;
 use Yii;
-use yii\web\Controller;
-use yii\web\HttpException;
-
+use yii\rest\Controller;
+use app\models\User;
+use app\modules\v1\models\LoginForm;
 
 class SiteController extends Controller
 {
 
-    public function actions()
+    /*public function actions()
     {
         return [
             'auth' => [
@@ -21,9 +19,9 @@ class SiteController extends Controller
                 'successCallback' => [$this, 'successCallback'],
             ],
         ];
-    }
+    }*/
 
-    public function successCallback($client)
+    /*public function successCallback($client)
     {
         // 用户的信息在$attributes中，以下是您根据您的实际情况增加的代码
         // 如果您同时有QQ互联登录，新浪微博等，可以通过 $client->id 来区别。
@@ -43,5 +41,49 @@ class SiteController extends Controller
         } else {//数据异常
             throw new HttpException(422, '数据异常...');//数据验证失败
         }
+    }*/
+
+    /**
+     * 有时你可能想通过直接在响应主体内包含分页信息来简化客户端的开发工作。
+     * @var array
+     */
+    public $serializer = [
+        'class' => 'yii\rest\Serializer',
+        'collectionEnvelope' => 'items',
+    ];
+
+    public function actions()
+    {
+        $actions = parent::actions();
+        return $actions;
     }
+
+    /**
+     * 用户登录action
+     */
+    public function actionLogin()
+    {
+        $loginForm = new LoginForm();//实例化登陆模型
+        $loginForm->setScenario('login');//设置登陆场景
+        if ($loginForm->load(Yii::$app->request->post()) && $loginForm->validate()) {//绑定登陆信息 && 验证登陆信息
+            return $loginForm->login();
+        } else {
+            return $loginForm->getErrors();
+        }
+    }
+
+    /**
+     * 用户注册action
+     */
+    public function actionRegister()
+    {
+        $loginForm = new LoginForm();//实例化登陆模型
+        $loginForm->setScenario('register');//设置注册场景
+        if ($loginForm->load(Yii::$app->request->post()) && $loginForm->validate()) {//绑定登陆信息 && 验证登陆信息
+            return $loginForm->register();
+        } else {
+            return $loginForm->getErrors();
+        }
+    }
+
 }

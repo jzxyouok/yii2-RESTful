@@ -19,6 +19,7 @@ namespace app\modules\v1\controllers;
 use app\modules\v1\models\User;
 use yii\data\ActiveDataProvider;
 use yii\filters\auth\CompositeAuth;
+
 use yii\filters\auth\HttpBasicAuth;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\auth\QueryParamAuth;
@@ -29,7 +30,9 @@ use yii\web\HttpException;
 
 class UserController extends Controller
 {
-    public $modelClass = 'app\modules\v1\models\User';
+    //(当Controller继承于ActiveController时可使用)
+    //public $modelClass = 'app\modules\v1\models\User';
+
     /**
      * 有时你可能想通过直接在响应主体内包含分页信息来简化客户端的开发工作。
      * @var array
@@ -78,7 +81,7 @@ class UserController extends Controller
     }
 
     /**
-     * 授权
+     * 授权(当Controller继承于ActiveController时可使用)
      * 通过RESTful APIs显示数据时，
      * 经常需要检查当前用户是否有权限访问和操作所请求的资源，
      * 在yii\rest\ActiveController中，
@@ -88,14 +91,17 @@ class UserController extends Controller
      * @param array $params
      * @throws HttpException
      */
-    public function checkAccess($action, $model = null, $params = [])
-    {
-        switch ($action) {
-            case "view":
-                //throw new HttpException(403);
-                break;
-        }
-    }
+    //    public function checkAccess($action, $model = null, $params = [])
+    //    {
+    //        switch ($action) {
+    //            case "index":
+    //                //throw new HttpException(403);
+    //                break;
+    //            case "view":
+    //                //throw new HttpException(403);
+    //                break;
+    //        }
+    //    }
 
     /**
      * 自定义操作
@@ -109,18 +115,11 @@ class UserController extends Controller
      * 所有这些操作通过yii\rest\ActiveController::actions() 方法申明，可覆盖actions()方法配置或禁用这些操作
      * @return array
      */
-/*    public function actions()
+    public function actions()
     {
         $actions = parent::actions();
-
-        // 禁用"delete"、"view" 和 "create" 操作
-        unset($actions['delete'], $actions['create'], $actions['view']);
-
-        // 使用"prepareDataProvider()"方法自定义数据provider
-        $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
-
         return $actions;
-    }*/
+    }
 
     /**
      * 为"index"操作准备和返回数据provider

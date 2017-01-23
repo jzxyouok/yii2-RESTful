@@ -3,64 +3,15 @@
 namespace app\modules\v1\models;
 
 use yii\db\ActiveRecord;
-use yii\filters\RateLimitInterface;
 use yii\helpers\Url;
-use yii\web\IdentityInterface;
 use yii\web\Link;
 use yii\web\Linkable;
 
-class User extends ActiveRecord implements IdentityInterface, Linkable, RateLimitInterface
+class User extends ActiveRecord implements Linkable
 {
     public static function tableName()
     {
         return '{{%user}}';
-    }
-
-    /**
-     * 根据给到的ID查询身份。
-     *
-     * @param string|integer $id 被查询的ID
-     * @return IdentityInterface|null 通过ID匹配到的身份对象
-     */
-    public static function findIdentity($id)
-    {
-        return static::findOne($id);
-    }
-
-    /**
-     * 根据 token 查询身份。
-     *
-     * @param string $token 被查询的 token
-     * @return IdentityInterface|null 通过 token 得到的身份对象
-     */
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-        return static::findOne(['id' => $token]);
-    }
-
-    /**
-     * @return int|string 当前用户ID
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return string 当前用户的（cookie）认证密钥
-     */
-    public function getAuthKey()
-    {
-        return $this->auth_key;
-    }
-
-    /**
-     * @param string $authKey
-     * @return boolean if auth key is valid for current user
-     */
-    public function validateAuthKey($authKey)
-    {
-        return $this->getAuthKey() === $authKey;
     }
 
     /**
@@ -114,55 +65,5 @@ class User extends ActiveRecord implements IdentityInterface, Linkable, RateLimi
                 ];
             }
         ];
-    }
-
-    //要启用速率限制, yii\web\User::identityClass 应该实现 yii\filters\RateLimitInterface.
-    // 这个接口需要实现以下三个方法：
-
-    /**
-     * getRateLimit(): 返回允许的请求的最大数目及时间，例如，[100, 600] 表示在600秒内最多100次的API调用。
-     * @param \yii\web\Request $request
-     * @param \yii\base\Action $action
-     * @return array
-     */
-    public function getRateLimit($request, $action)
-    {
-        return [RateLimit::$rateLimit, RateLimit::$second];// $rateLimit requests per second
-    }
-
-    /**
-     * loadAllowance(): 返回剩余的允许的请求和相应的UNIX时间戳数 当最后一次速率限制检查时。
-     * @param \yii\web\Request $request
-     * @param \yii\base\Action $action
-     * @return array
-     */
-    public function loadAllowance($request, $action)
-    {
-        $id = \Yii::$app->user->id;//获取当前登录用户id
-        $rateLimit = RateLimit::find()->where([
-            'id' => $id
-        ])->one();//获取当前登录用户Api请求频率相关数据
-        return [
-            !empty($rateLimit->allowance) ? $rateLimit->allowance : 0,
-            !empty($rateLimit->allowance_updated_at) ? $rateLimit->allowance_updated_at : 0
-        ];
-    }
-
-    /**
-     * saveAllowance(): 保存允许剩余的请求数和当前的UNIX时间戳。
-     * @param \yii\web\Request $request
-     * @param \yii\base\Action $action
-     * @param int $allowance
-     * @param int $timestamp
-     */
-    public function saveAllowance($request, $action, $allowance, $timestamp)
-    {
-        //更新当前登录用户Api请求频率相关数据
-        $rateLimit = new RateLimit();
-        $id = \Yii::$app->user->id;
-        $rateLimit->id = $id;
-        $rateLimit->allowance = $allowance;
-        $rateLimit->allowance_updated_at = $timestamp;
-        $rateLimit->save();
     }
 }

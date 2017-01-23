@@ -7,7 +7,7 @@
  * Message: Api调用频率相关数据模型（居于Redis实现）
  */
 
-namespace app\modules\v1\models;
+namespace app\models;
 
 
 use yii\redis\ActiveRecord;

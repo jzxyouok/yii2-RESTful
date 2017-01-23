@@ -5,9 +5,9 @@
  * 这可以很容易地通过配置urlManager应用程序组件来完成 如下所示：
  */
 return [
-//    'enablePrettyUrl' => true,
-//    'enableStrictParsing' => true,
-//    'showScriptName' => false,
+    'enablePrettyUrl' => true,
+    'enableStrictParsing' => true,
+    'showScriptName' => false,
 //    'rules' => [
 //        [
 //            'class' => 'yii\rest\UrlRule',
@@ -16,6 +16,12 @@ return [
 //            ],
 //        ],
 //    ],
+    'rules' => [
+        '<module>/<controller>/<id:\d+>' => '<module>/<controller>/view',
+        '<module>/<controller:\w+>/<action:\w+>/<id:\d+>' => '<module>/<controller>/<action>',
+        '<module>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
+        '<module>/<controller:\w+>' => '<module>/<controller>/index',
+    ]
 ];
 /**
  * 相比于URL管理的Web应用程序，
