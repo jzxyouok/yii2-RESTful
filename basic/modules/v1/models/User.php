@@ -41,8 +41,6 @@ class User extends ActiveRecord implements Linkable
             'password_hash',
             'password_reset_token',
             'email',
-            'role',
-            'status',
             'created_at',
             'updated_at',
             'now_time' => function ($model) {
