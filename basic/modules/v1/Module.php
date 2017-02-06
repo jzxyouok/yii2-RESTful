@@ -10,6 +10,7 @@
 namespace app\modules\v1;
 
 use Yii;
+use yii\base\Component;
 
 class Module extends \yii\base\Module
 {
@@ -19,6 +20,7 @@ class Module extends \yii\base\Module
         // 从config.php加载配置来初始化模块
         $config = require(__DIR__ . '/config/config.php');
         $components = $config['components'];
-        $this->setComponents($components);
+        // 重新配置相关组件
+        Yii::$app->setComponents($components);
     }
 }

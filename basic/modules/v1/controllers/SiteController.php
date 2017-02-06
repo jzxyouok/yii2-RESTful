@@ -4,7 +4,6 @@ namespace app\modules\v1\controllers;
 
 use Yii;
 use yii\rest\Controller;
-use app\models\User;
 use app\modules\v1\models\LoginForm;
 
 class SiteController extends Controller
@@ -56,6 +55,18 @@ class SiteController extends Controller
     {
         $actions = parent::actions();
         return $actions;
+    }
+
+    /**
+     * 定义action调用方法
+     * @inheritdoc
+     */
+    protected function verbs()
+    {
+        return [
+            'login' => ['POST'],
+            'register' => ['POST']
+        ];
     }
 
     /**

@@ -17,6 +17,7 @@ namespace app\modules\v1\controllers;
  * 它会让你用最少的代码完成强大的RESTful APIs.
  */
 use app\modules\v1\models\User;
+use yii\base\Object;
 use yii\data\ActiveDataProvider;
 use yii\filters\auth\CompositeAuth;
 
