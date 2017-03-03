@@ -16,6 +16,9 @@ namespace app\modules\v1\controllers;
  * 可考虑将控制器类继承yii\rest\ActiveController，
  * 它会让你用最少的代码完成强大的RESTful APIs.
  */
+use yii\filters\Cors;
+use yii\web\Response;
+
 use app\modules\v1\models\User;
 use yii\base\Object;
 use yii\data\ActiveDataProvider;
@@ -78,7 +81,21 @@ class UserController extends Controller
             'class' => RateLimiter::className(),
             'enableRateLimitHeaders' => true,
         ];
+
+        //开启Cors跨域
+        $behaviors['corsFilter'] = [
+            'class' => Cors::className(),
+        ];
+
         return $behaviors;
+    }
+
+    protected function verbs()
+    {
+        return [
+            'index' => ['GET', 'POST'],
+            'view' => ['GET', 'POST'],
+        ];
     }
 
     /**
